@@ -1,0 +1,47 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: login.html
+    Purpose: The login page. Thymeleaf binds each <input> to a property of
+             the LoginForm object the controller placed in the model.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>WikiApp — Login</title>
+    <!-- Link to our custom stylesheet served from /static/css/style.css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+    <div class="card">
+        <h1>WikiApp</h1>
+        <p class="subtitle">Administrator Login</p>
+
+        <!--
+            th:object binds the whole form to the loginForm model attribute.
+            th:action builds the correct POST URL ("/login") for us.
+        -->
+        <form th:action="@{/login}" th:object="${loginForm}" method="post">
+
+            <label for="username">Username</label>
+            <!-- th:field handles name=, id= and value= for the username property -->
+            <input type="text" id="username" th:field="*{username}" autofocus/>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}"/>
+
+            <div class="buttons">
+                <!-- A normal link styled like a button — points to /register -->
+                <a class="btn secondary" th:href="@{/register}">Register</a>
+                <!-- The submit button posts the form back to this controller -->
+                <button class="btn primary" type="submit">Log in</button>
+            </div>
+        </form>
+
+        <p class="hint">Hint for marker: username is the first name in lowercase, password is 123.</p>
+    </div>
+
+</body>
+</html>

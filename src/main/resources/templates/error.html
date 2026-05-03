@@ -1,0 +1,27 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: error.html
+    Purpose: Shown when login fails (wrong username or password).
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>WikiApp — Login Error</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+    <div class="card error">
+        <h1>Login Failed</h1>
+
+        <!-- The controller put the error text into the "errorMessage" attribute -->
+        <p th:text="${errorMessage}">Something went wrong.</p>
+
+        <!-- Link back to the login form so the user can try again -->
+        <a class="btn primary" th:href="@{/login}">Try again</a>
+    </div>
+
+</body>
+</html>

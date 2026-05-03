@@ -1,0 +1,28 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: welcome.html
+    Purpose: Shown after a successful login. Greets the user by their username.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>WikiApp — Welcome</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+    <div class="card success">
+        <h1>Welcome!</h1>
+
+        <!-- th:text replaces the placeholder text with the model attribute "username" -->
+        <p>Hello <strong th:text="${username}">user</strong>, you have logged in successfully.</p>
+
+        <p>The full Wiki interface (article browsing and CRUD) will be available in Part B.</p>
+
+        <a class="btn primary" th:href="@{/login}">Log out</a>
+    </div>
+
+</body>
+</html>
