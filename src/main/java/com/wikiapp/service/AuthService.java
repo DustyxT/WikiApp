@@ -2,52 +2,49 @@
  * Author: Movindu Lochana
  * Student ID: s1577380
  * File: AuthService.java
- * Purpose: The Service (business logic) layer. The Controller asks this class
- *          "is this login valid?" and this class decides — possibly after
- *          trimming whitespace, lower-casing the username, or running other
- *          validation rules. The actual data lookup is delegated to the
- *          Repository, so each layer has ONE clear responsibility.
+ * Purpose: The Service (business logic) layer for authentication.
+ *          PART A: Used a hard-coded UserRepository.
+ *          PART B: Now talks to the database through AdminRepository.
+ *          The Controller and the Controller's view code did NOT change -
+ *          this is exactly the benefit of layered design.
  */
 package com.wikiapp.service;
 
+import com.wikiapp.model.Admin;
 import com.wikiapp.model.LoginForm;
-import com.wikiapp.repository.UserRepository;
+import com.wikiapp.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// @Service tells Spring this is a business-logic bean. Spring will create one
-// instance at start-up and inject it into any controller that needs it.
+import java.util.Optional;
+
 @Service
 public class AuthService {
 
-    // The Repository this service depends on. We never create it ourselves —
-    // Spring "injects" the same single UserRepository instance into here.
-    private final UserRepository userRepository;
+    // The Repository this service depends on.
+    private final AdminRepository adminRepository;
 
-    // Constructor injection (preferred over field injection because it makes
-    // the dependency obvious and the class easier to unit-test).
+    // Constructor injection - Spring passes in the AdminRepository bean.
     @Autowired
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthService(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
     }
 
     /**
-     * Checks whether the data inside the submitted LoginForm is valid.
-     * Returns true only when the credentials match the stored ones.
+     * Returns true if the supplied form contains valid credentials, otherwise
+     * false. Validation rules and credential lookup are kept in one place.
      */
     public boolean isAuthenticated(LoginForm form) {
 
-        // Guard against a null form (should not happen, but safe to check).
+        // Defensive null check.
         if (form == null) {
             return false;
         }
 
-        // Read the values typed by the user.
         String username = form.getUsername();
         String password = form.getPassword();
 
-        // Extra validation rule: reject empty / whitespace-only input early
-        // so we don't even bother asking the repository.
+        // Reject empty / whitespace-only inputs.
         if (username == null || username.trim().isEmpty()) {
             return false;
         }
@@ -55,11 +52,21 @@ public class AuthService {
             return false;
         }
 
-        // Normalise the username: trim whitespace and force lower-case so the
-        // user can type "Movindu" or " movindu " and still log in successfully.
+        // Normalise the username so "Movindu" or " movindu " still works.
         String cleanedUsername = username.trim().toLowerCase();
 
-        // Delegate the actual credential lookup to the Repository layer.
-        return userRepository.credentialsMatch(cleanedUsername, password);
+        // Look up the admin in the database. Optional means the result
+        // might be empty - which is normal if no such username exists.
+        Optional<Admin> maybeAdmin = adminRepository.findByUsername(cleanedUsername);
+
+        // If no admin with that username exists, fail.
+        if (maybeAdmin.isEmpty()) {
+            return false;
+        }
+
+        // Compare the stored password to the supplied one.
+        // .equals() compares the actual text - never use == for strings.
+        Admin admin = maybeAdmin.get();
+        return admin.getPassword().equals(password);
     }
 }

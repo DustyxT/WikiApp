@@ -132,3 +132,224 @@ form input:focus {
     border-top: 6px solid #dc2626;
 }
 .card.error h1 { color: #dc2626; }
+
+/* ====================================================================
+   PART B styles - wiki list/view pages and admin dashboard/forms.
+   The login page above keeps its centred-card look. The pages below
+   use a top navigation bar and a normal page layout.
+   ==================================================================== */
+
+/* "page" class on <body> switches off the centred-card layout. */
+body.page {
+    display: block;
+    background: #f3f4f6;
+    color: #1f2937;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* Top navigation bar shown on every Part B page. */
+.topbar {
+    background: #1e3a8a;
+    color: #ffffff;
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.topbar.admin { background: #111827; }
+
+.topbar .brand {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+}
+.topbar .links { display: flex; gap: 20px; align-items: center; }
+.topbar .links a, .topbar .links span {
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+.topbar .links a:hover { color: #ffffff; text-decoration: underline; }
+
+/* Main content container. */
+.container {
+    max-width: 980px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+.container.narrow { max-width: 640px; }
+
+.container h1 {
+    color: #1e3a8a;
+    margin-bottom: 18px;
+}
+
+/* Header row with a title on the left and an action button on the right. */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Search bar on the public wiki list page. */
+.search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+.search input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* "No articles" message. */
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+}
+
+/* Grid of article cards on the wiki list page. */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+.article-card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.1s, box-shadow 0.15s;
+}
+.article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.article-card h2 { font-size: 18px; margin: 8px 0; }
+.article-card h2 a { color: #1e3a8a; text-decoration: none; }
+.article-card h2 a:hover { text-decoration: underline; }
+.article-card .preview { font-size: 14px; color: #4b5563; line-height: 1.5; }
+.article-card .meta { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+
+/* Coloured pill showing the category. */
+.badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e3a8a;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Full article view. */
+.article-full {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.article-full h1 { color: #1e3a8a; margin: 10px 0; }
+.article-full .meta { color: #9ca3af; font-size: 13px; margin-bottom: 18px; }
+.article-full .content {
+    line-height: 1.7;
+    font-size: 15px;
+    white-space: pre-wrap;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1e3a8a;
+    text-decoration: none;
+    font-size: 14px;
+}
+.back:hover { text-decoration: underline; }
+
+/* Admin dashboard table. */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.data-table th, .data-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+.data-table th {
+    background: #f9fafb;
+    color: #374151;
+    font-weight: 600;
+}
+.data-table tbody tr:hover { background: #f9fafb; }
+.data-table .actions { display: flex; gap: 6px; }
+
+/* Smaller button variant used inside the table. */
+.btn.small { padding: 6px 12px; font-size: 13px; }
+.btn.danger { background: #dc2626; color: #ffffff; }
+.btn.danger:hover { background: #b91c1c; }
+
+/* Article create / edit form. */
+.article-form {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.article-form label {
+    display: block;
+    margin: 14px 0 6px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+}
+.article-form input,
+.article-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+}
+.article-form textarea { resize: vertical; }
+.article-form input:focus,
+.article-form textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Validation error text under fields. */
+.error-text {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Quote block on the delete-confirmation page. */
+blockquote {
+    background: #f9fafb;
+    border-left: 4px solid #1e3a8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    text-align: left;
+}

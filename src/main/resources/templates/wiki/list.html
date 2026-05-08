@@ -1,0 +1,58 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: wiki/list.html
+    Purpose: PART B - Public wiki home page. Lists every article and lets
+             the visitor filter by category or search by title.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>WikiApp - Articles</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="page">
+
+    <!-- Top navigation bar -->
+    <nav class="topbar">
+        <a class="brand" th:href="@{/wiki}">WikiApp</a>
+        <div class="links">
+            <a th:href="@{/wiki}">All articles</a>
+            <a th:href="@{/login}">Admin login</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>Articles</h1>
+
+        <!-- Search form. method="get" so the search text appears in the URL -->
+        <form class="search" th:action="@{/wiki}" method="get">
+            <input type="text" name="search" th:value="${search}"
+                   placeholder="Search articles by title..."/>
+            <button class="btn primary" type="submit">Search</button>
+            <a class="btn secondary" th:href="@{/wiki}">Clear</a>
+        </form>
+
+        <!-- Friendly note when no articles match -->
+        <p th:if="${#lists.isEmpty(articles)}" class="empty">
+            No articles found. Try a different search.
+        </p>
+
+        <!-- Loop over the articles list and render each as a card.
+             th:each is Thymeleaf's "for each" - same idea as a Java for loop. -->
+        <div class="article-grid" th:unless="${#lists.isEmpty(articles)}">
+            <article class="article-card" th:each="a : ${articles}">
+                <span class="badge" th:text="${a.category}">Category</span>
+                <h2><a th:href="@{'/wiki/' + ${a.id}}" th:text="${a.title}">Title</a></h2>
+                <p class="preview" th:text="${#strings.abbreviate(a.content, 140)}">Preview</p>
+                <p class="meta">
+                    Last updated:
+                    <span th:text="${#temporals.format(a.lastUpdated, 'dd MMM yyyy HH:mm')}">date</span>
+                </p>
+            </article>
+        </div>
+    </main>
+
+</body>
+</html>

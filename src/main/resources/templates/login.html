@@ -41,6 +41,12 @@
         </form>
 
         <p class="hint">Hint for marker: username is the first name in lowercase, password is 123.</p>
+
+        <!-- Quick link to the public wiki - non-admins can browse without logging in. -->
+        <p class="hint">
+            Just want to read articles?
+            <a th:href="@{/wiki}">Browse the public wiki</a>.
+        </p>
     </div>
 
 </body>

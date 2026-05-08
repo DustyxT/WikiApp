@@ -1,0 +1,45 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: admin/confirm-delete.html
+    Purpose: PART B - "Are you sure?" page shown before actually deleting an
+             article. Deleting via a POST form (not just a link) so the
+             browser cannot trigger it accidentally.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Confirm delete - WikiApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="page">
+
+    <nav class="topbar admin">
+        <a class="brand" th:href="@{/admin}">WikiApp Admin</a>
+        <div class="links">
+            <a th:href="@{/admin}">Dashboard</a>
+            <a th:href="@{/logout}">Log out</a>
+        </div>
+    </nav>
+
+    <main class="container narrow">
+        <div class="card error">
+            <h1>Delete article?</h1>
+            <p>You are about to permanently delete this article:</p>
+            <blockquote>
+                <strong th:text="${article.title}">Title</strong><br/>
+                <span class="badge" th:text="${article.category}">Category</span>
+            </blockquote>
+            <p>This action cannot be undone.</p>
+
+            <!-- The form does a POST to /admin/delete/{id}. -->
+            <form th:action="@{'/admin/delete/' + ${article.id}}" method="post" class="buttons">
+                <a class="btn secondary" th:href="@{/admin}">Cancel</a>
+                <button class="btn danger" type="submit">Yes, delete</button>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

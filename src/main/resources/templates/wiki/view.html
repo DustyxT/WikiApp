@@ -1,0 +1,40 @@
+<!--
+    Author: Movindu Lochana
+    Student ID: s1577380
+    File: wiki/view.html
+    Purpose: PART B - Public page that displays one full article.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${article.title} + ' - WikiApp'">Article - WikiApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="page">
+
+    <nav class="topbar">
+        <a class="brand" th:href="@{/wiki}">WikiApp</a>
+        <div class="links">
+            <a th:href="@{/wiki}">All articles</a>
+            <a th:href="@{/login}">Admin login</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <a class="back" th:href="@{/wiki}">&larr; Back to all articles</a>
+
+        <article class="article-full">
+            <span class="badge" th:text="${article.category}">Category</span>
+            <h1 th:text="${article.title}">Title</h1>
+            <p class="meta">
+                Last updated:
+                <span th:text="${#temporals.format(article.lastUpdated, 'dd MMM yyyy HH:mm')}">date</span>
+            </p>
+            <!-- th:text auto-escapes HTML so user content can never inject scripts. -->
+            <div class="content" th:text="${article.content}">Content</div>
+        </article>
+    </main>
+
+</body>
+</html>

@@ -15,3 +15,12 @@ Thumbs.db
 
 # Logs
 *.log
+
+# H2 database files (Part B)
+data/
+*.mv.db
+*.trace.db
+*.lock.db
+
+# Stray Maven source folder that OneDrive sometimes resurrects
+apache-maven-*/
