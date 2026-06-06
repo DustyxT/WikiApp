@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/wiki")
@@ -70,15 +71,16 @@ public class WikiController {
             articles = articleService.findAll();
         }
 
-        // Build a sorted list of unique category names from ALL articles so the
-        // template can show category filter buttons. Stream.distinct() removes
-        // duplicates; sorted() alphabetises them.
-        List<String> categories = articleService.findAll()
-                .stream()
-                .map(Article::getCategory)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+        // Build a sorted list of unique category names for the filter buttons.
+        // Loop through every article; if the category is not already in the list,
+        // add it. Then sort the list alphabetically.
+        List<String> categories = new ArrayList<>();
+        for (Article a : articleService.findAll()) {
+            if (!categories.contains(a.getCategory())) {
+                categories.add(a.getCategory());
+            }
+        }
+        Collections.sort(categories);
 
         // Put the list and the current filter values into the Model so the
         // template can display them.
