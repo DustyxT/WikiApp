@@ -2,354 +2,515 @@
  * Author: Movindu Lochana
  * Student ID: s1577380
  * File: style.css
- * Purpose: Styles for the login, welcome, error and register pages.
+ * Purpose: Styles for every page in WikiApp.
+ *          The top section styles the login/error/register card pages.
+ *          The "PART B" section below styles the wiki and admin pages.
  */
 
-/* Reset default margins so the page fills the whole viewport */
+/* ── Reset ─────────────────────────────────────────────────────────────── */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Page background — soft gradient looks more "instructive" than flat white */
 body {
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: #1f2937;
+    background: #f1f5f9;
+}
+
+/* ── LOGIN / ERROR / REGISTER pages ────────────────────────────────────── */
+/* These pages use the centred-card layout (no .page class on body). */
+
+body:not(.page) {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #38bdf8 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #38bdf8 100%);
     padding: 20px;
-    color: #1f2937;
 }
 
-/* The white card that holds the form / message */
+/* White card that holds the login form */
 .card {
     background: #ffffff;
     width: 100%;
-    max-width: 400px;
-    padding: 36px 32px;
-    border-radius: 12px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    max-width: 420px;
+    padding: 40px 36px;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
     text-align: center;
 }
 
-/* Big heading */
 .card h1 {
     color: #1e3a8a;
+    font-size: 30px;
     margin-bottom: 6px;
-    font-size: 28px;
 }
 
-/* Smaller subtitle under the heading */
 .card .subtitle {
     color: #6b7280;
-    margin-bottom: 24px;
     font-size: 14px;
+    margin-bottom: 28px;
 }
 
-/* Form labels float to the left and have breathing room */
 form label {
     display: block;
     text-align: left;
-    margin: 14px 0 6px;
+    margin: 16px 0 6px;
     font-weight: 600;
     color: #374151;
     font-size: 14px;
 }
 
-/* Text/password inputs */
-form input {
+form input[type="text"],
+form input[type="password"] {
     width: 100%;
-    padding: 10px 12px;
+    padding: 11px 13px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-/* Highlight when the user clicks into a field */
 form input:focus {
     outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
 
-/* Container for the Register / Log in buttons */
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 22px;
-}
-
-/* Shared button look */
-.btn {
-    flex: 1;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    transition: transform 0.05s, background 0.15s;
-}
-
-.btn:active { transform: translateY(1px); }
-
-/* Primary action — blue */
-.btn.primary {
-    background: #2563eb;
-    color: #ffffff;
-}
-.btn.primary:hover { background: #1d4ed8; }
-
-/* Secondary action — light grey */
-.btn.secondary {
-    background: #e5e7eb;
-    color: #1f2937;
-}
-.btn.secondary:hover { background: #d1d5db; }
-
-/* The small marker hint at the bottom of the login card */
 .hint {
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: 12px;
     color: #9ca3af;
 }
 
-/* Coloured stripe at the top of the success card */
-.card.success {
-    border-top: 6px solid #16a34a;
-}
+.hint a { color: #2563eb; }
 
-/* Coloured stripe at the top of the error card */
-.card.error {
-    border-top: 6px solid #dc2626;
-}
+.card.success { border-top: 6px solid #16a34a; }
+.card.error   { border-top: 6px solid #dc2626; }
 .card.error h1 { color: #dc2626; }
 
-/* ====================================================================
-   PART B styles - wiki list/view pages and admin dashboard/forms.
-   The login page above keeps its centred-card look. The pages below
-   use a top navigation bar and a normal page layout.
-   ==================================================================== */
+/* ── Shared button styles ───────────────────────────────────────────────── */
 
-/* "page" class on <body> switches off the centred-card layout. */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s, transform 0.05s;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn.primary   { background: #2563eb; color: #fff; }
+.btn.primary:hover { background: #1d4ed8; }
+
+.btn.secondary { background: #e5e7eb; color: #1f2937; }
+.btn.secondary:hover { background: #d1d5db; }
+
+.btn.small  { padding: 6px 12px; font-size: 13px; border-radius: 6px; }
+.btn.danger { background: #dc2626; color: #fff; }
+.btn.danger:hover { background: #b91c1c; }
+
+/* Button row on login/forms */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+}
+.buttons .btn { flex: 1; }
+
+/* ── PART B — page layout (body has class "page") ───────────────────────── */
+
 body.page {
-    display: block;
-    background: #f3f4f6;
-    color: #1f2937;
-    align-items: stretch;
-    justify-content: flex-start;
+    background: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Top navigation bar shown on every Part B page. */
+/* ── Top navigation bar ─────────────────────────────────────────────────── */
+
 .topbar {
     background: #1e3a8a;
-    color: #ffffff;
-    padding: 14px 28px;
+    color: #fff;
+    padding: 0 28px;
+    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
+
+/* Dark bar for the admin section */
 .topbar.admin { background: #111827; }
 
 .topbar .brand {
-    color: #ffffff;
+    color: #fff;
     font-size: 20px;
     font-weight: 700;
     text-decoration: none;
+    letter-spacing: -0.3px;
 }
-.topbar .links { display: flex; gap: 20px; align-items: center; }
-.topbar .links a, .topbar .links span {
-    color: #e5e7eb;
+
+.topbar .links {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.topbar .links a,
+.topbar .links span {
+    color: #cbd5e1;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.15s;
 }
-.topbar .links a:hover { color: #ffffff; text-decoration: underline; }
+.topbar .links a:hover { color: #fff; }
 
-/* Main content container. */
+/* "+ New article" button inside the nav */
+.btn.nav-btn {
+    background: #2563eb;
+    color: #fff !important;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.btn.nav-btn:hover { background: #1d4ed8; }
+
+/* ── Main content container ─────────────────────────────────────────────── */
+
 .container {
-    max-width: 980px;
+    max-width: 1000px;
     margin: 32px auto;
     padding: 0 24px;
+    flex: 1;
 }
-.container.narrow { max-width: 640px; }
+.container.narrow { max-width: 660px; }
 
 .container h1 {
     color: #1e3a8a;
-    margin-bottom: 18px;
+    font-size: 26px;
 }
 
-/* Header row with a title on the left and an action button on the right. */
+/* Header row: title left, count / action button right */
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
 }
 
-/* Search bar on the public wiki list page. */
+.article-count {
+    font-size: 13px;
+    color: #6b7280;
+    background: #e2e8f0;
+    padding: 4px 12px;
+    border-radius: 999px;
+}
+
+/* ── Search bar ─────────────────────────────────────────────────────────── */
+
 .search {
     display: flex;
     gap: 8px;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
 }
+
 .search input {
     flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-/* "No articles" message. */
-.empty {
-    text-align: center;
-    color: #6b7280;
-    padding: 30px;
-    background: #ffffff;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
-    border: 1px dashed #d1d5db;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
 }
 
-/* Grid of article cards on the wiki list page. */
+/* ── Category filter pills ──────────────────────────────────────────────── */
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.filter-label {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* Each clickable category pill */
+.filter-pill {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    background: #e2e8f0;
+    color: #374151;
+    border: 1px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+}
+.filter-pill:hover {
+    background: #cbd5e1;
+}
+/* The currently selected category gets a solid blue highlight */
+.filter-pill.active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #1d4ed8;
+}
+
+/* ── Article card grid ──────────────────────────────────────────────────── */
+
 .article-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 20px;
 }
+
 .article-card {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    transition: transform 0.1s, box-shadow 0.15s;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border-left: 4px solid #2563eb;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
 }
 .article-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
-.article-card h2 { font-size: 18px; margin: 8px 0; }
-.article-card h2 a { color: #1e3a8a; text-decoration: none; }
-.article-card h2 a:hover { text-decoration: underline; }
-.article-card .preview { font-size: 14px; color: #4b5563; line-height: 1.5; }
-.article-card .meta { font-size: 12px; color: #9ca3af; margin-top: 8px; }
 
-/* Coloured pill showing the category. */
+.article-card h2 {
+    font-size: 17px;
+    margin: 0;
+}
+.article-card h2 a {
+    color: #1e3a8a;
+    text-decoration: none;
+}
+.article-card h2 a:hover { text-decoration: underline; }
+
+.article-card .preview {
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.55;
+    flex: 1;
+}
+
+.article-card .meta {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Admin Edit/Delete buttons at the bottom of each card */
+.card-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+}
+
+/* ── Category badge (coloured pill) ────────────────────────────────────── */
+
 .badge {
     display: inline-block;
     background: #dbeafe;
-    color: #1e3a8a;
+    color: #1e40af;
     padding: 3px 10px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
 }
 
-/* Full article view. */
-.article-full {
-    background: #ffffff;
-    padding: 32px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.article-full h1 { color: #1e3a8a; margin: 10px 0; }
-.article-full .meta { color: #9ca3af; font-size: 13px; margin-bottom: 18px; }
-.article-full .content {
-    line-height: 1.7;
+/* ── Empty state ────────────────────────────────────────────────────────── */
+
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px;
+    background: #fff;
+    border-radius: 10px;
+    border: 2px dashed #e2e8f0;
     font-size: 15px;
-    white-space: pre-wrap;
 }
+
+/* ── Full article view ──────────────────────────────────────────────────── */
+
+/* Row holding the back link and the admin edit/delete buttons */
+.article-nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.admin-actions { display: flex; gap: 8px; }
 
 .back {
     display: inline-block;
-    margin-bottom: 12px;
-    color: #1e3a8a;
+    color: #2563eb;
     text-decoration: none;
     font-size: 14px;
+    font-weight: 500;
 }
 .back:hover { text-decoration: underline; }
 
-/* Admin dashboard table. */
+.article-full {
+    background: #fff;
+    padding: 36px 40px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border-top: 4px solid #2563eb;
+}
+.article-full h1 {
+    color: #1e3a8a;
+    font-size: 28px;
+    margin: 10px 0 6px;
+}
+.article-full .meta {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+.article-full .content {
+    line-height: 1.75;
+    font-size: 15px;
+    color: #374151;
+    white-space: pre-wrap;
+}
+
+/* ── Admin dashboard table ──────────────────────────────────────────────── */
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 8px;
+    background: #fff;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
-.data-table th, .data-table td {
-    padding: 12px 14px;
+
+.data-table th,
+.data-table td {
+    padding: 13px 16px;
     text-align: left;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #f1f5f9;
     font-size: 14px;
 }
+
 .data-table th {
-    background: #f9fafb;
+    background: #f8fafc;
     color: #374151;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
 }
-.data-table tbody tr:hover { background: #f9fafb; }
-.data-table .actions { display: flex; gap: 6px; }
 
-/* Smaller button variant used inside the table. */
-.btn.small { padding: 6px 12px; font-size: 13px; }
-.btn.danger { background: #dc2626; color: #ffffff; }
-.btn.danger:hover { background: #b91c1c; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: #f8fafc; }
+.data-table .actions { display: flex; gap: 8px; }
 
-/* Article create / edit form. */
+.data-table a {
+    color: #1e3a8a;
+    text-decoration: none;
+    font-weight: 500;
+}
+.data-table a:hover { text-decoration: underline; }
+
+/* ── Article create / edit form ─────────────────────────────────────────── */
+
 .article-form {
-    background: #ffffff;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    background: #fff;
+    padding: 28px 32px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
+
 .article-form label {
     display: block;
-    margin: 14px 0 6px;
+    margin: 18px 0 6px;
     font-weight: 600;
     color: #374151;
     font-size: 14px;
 }
+
 .article-form input,
 .article-form textarea {
     width: 100%;
-    padding: 10px 12px;
+    padding: 11px 13px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 .article-form textarea { resize: vertical; }
+
 .article-form input:focus,
 .article-form textarea:focus {
     outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
 }
 
-/* Validation error text under fields. */
+/* Red validation error text under fields */
 .error-text {
     color: #dc2626;
     font-size: 13px;
     margin-top: 4px;
 }
 
-/* Quote block on the delete-confirmation page. */
+/* ── Delete confirmation page ───────────────────────────────────────────── */
+
 blockquote {
-    background: #f9fafb;
-    border-left: 4px solid #1e3a8a;
-    padding: 12px 16px;
-    margin: 14px 0;
-    text-align: left;
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    background: #fff;
+    margin-top: auto;
 }

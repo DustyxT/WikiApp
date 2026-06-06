@@ -10,6 +10,7 @@ package com.wikiapp.controller;
 
 import com.wikiapp.model.Article;
 import com.wikiapp.service.ArticleService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/wiki")
@@ -40,10 +42,21 @@ public class WikiController {
      * @RequestParam(required=false) means the parameter is optional - if the
      * URL does not include it, Spring passes null.
      */
+    /**
+     * Helper: returns true when an admin session is active.
+     * We check this here in the Controller (the proper MVC layer) and pass
+     * a simple boolean to the template, rather than letting the template
+     * reach into the session directly.
+     */
+    private boolean isAdmin(HttpSession session) {
+        return session.getAttribute(AuthController.SESSION_ADMIN_KEY) != null;
+    }
+
     @GetMapping
     public String listArticles(
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "search",   required = false) String search,
+            HttpSession session,
             Model model) {
 
         List<Article> articles;
@@ -57,11 +70,24 @@ public class WikiController {
             articles = articleService.findAll();
         }
 
+        // Build a sorted list of unique category names from ALL articles so the
+        // template can show category filter buttons. Stream.distinct() removes
+        // duplicates; sorted() alphabetises them.
+        List<String> categories = articleService.findAll()
+                .stream()
+                .map(Article::getCategory)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
         // Put the list and the current filter values into the Model so the
         // template can display them.
         model.addAttribute("articles", articles);
+        model.addAttribute("categories", categories);
         model.addAttribute("category", category);
         model.addAttribute("search", search);
+        // isAdmin tells the template whether to show admin controls.
+        model.addAttribute("isAdmin", isAdmin(session));
 
         return "wiki/list";
     }
@@ -71,7 +97,9 @@ public class WikiController {
      * by @PathVariable - so /wiki/3 will set id = 3.
      */
     @GetMapping("/{id}")
-    public String viewArticle(@PathVariable("id") Long id, Model model) {
+    public String viewArticle(@PathVariable("id") Long id,
+                              HttpSession session,
+                              Model model) {
 
         Optional<Article> maybeArticle = articleService.findById(id);
 
@@ -84,6 +112,7 @@ public class WikiController {
         }
 
         model.addAttribute("article", maybeArticle.get());
+        model.addAttribute("isAdmin", isAdmin(session));
         return "wiki/view";
     }
 }

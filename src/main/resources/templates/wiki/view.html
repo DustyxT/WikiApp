@@ -3,6 +3,7 @@
     Student ID: s1577380
     File: wiki/view.html
     Purpose: PART B - Public page that displays one full article.
+             Admin controls (Edit / Delete) appear when logged in.
 -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -17,13 +18,27 @@
         <a class="brand" th:href="@{/wiki}">WikiApp</a>
         <div class="links">
             <a th:href="@{/wiki}">All articles</a>
-            <a th:href="@{/login}">Admin login</a>
+            <th:block th:if="${isAdmin}">
+                <a class="btn nav-btn" th:href="@{/admin/new}">+ New article</a>
+                <a th:href="@{/admin}">Admin dashboard</a>
+                <a th:href="@{/logout}">Log out</a>
+            </th:block>
+            <a th:unless="${isAdmin}" th:href="@{/login}">Admin login</a>
         </div>
     </nav>
 
     <main class="container">
-        <a class="back" th:href="@{/wiki}">&larr; Back to all articles</a>
 
+        <!-- Top row: back link on the left, admin edit/delete on the right -->
+        <div class="article-nav-row">
+            <a class="back" th:href="@{/wiki}">&larr; Back to all articles</a>
+            <div class="admin-actions" th:if="${isAdmin}">
+                <a class="btn small" th:href="@{'/admin/edit/' + ${article.id}}">Edit article</a>
+                <a class="btn small danger" th:href="@{'/admin/delete/' + ${article.id}}">Delete article</a>
+            </div>
+        </div>
+
+        <!-- Full article body -->
         <article class="article-full">
             <span class="badge" th:text="${article.category}">Category</span>
             <h1 th:text="${article.title}">Title</h1>
@@ -31,10 +46,15 @@
                 Last updated:
                 <span th:text="${#temporals.format(article.lastUpdated, 'dd MMM yyyy HH:mm')}">date</span>
             </p>
-            <!-- th:text auto-escapes HTML so user content can never inject scripts. -->
-            <div class="content" th:text="${article.content}">Content</div>
+            <!-- th:text auto-escapes HTML so user content can never inject scripts -->
+            <div class="content" th:text="${article.content}">Content goes here.</div>
         </article>
+
     </main>
+
+    <footer class="site-footer">
+        <p>WikiApp | BIT235 Assessment 2 | Movindu Lochana (s1577380)</p>
+    </footer>
 
 </body>
 </html>
