@@ -916,10 +916,16 @@ story.append(code_block("src/main/java/com/wikiapp/controller/WikiController.jav
     "        else",
     "            articles = articleService.findAll();",
     "",
-    "        // Build list of unique categories for the filter pills",
-    "        List&lt;String&gt; categories = articleService.findAll()",
-    "            .stream().map(Article::getCategory)",
-    "            .distinct().sorted().collect(Collectors.toList());",
+    "        // Build a sorted list of unique category names for the filter buttons.",
+    "        // Loop through every article; if the category is not already in the",
+    "        // list, add it. Then sort the list alphabetically.",
+    "        List&lt;String&gt; categories = new ArrayList&lt;&gt;();",
+    "        for (Article a : articleService.findAll()) {",
+    "            if (!categories.contains(a.getCategory())) {",
+    "                categories.add(a.getCategory());",
+    "            }",
+    "        }",
+    "        Collections.sort(categories);",
     "",
     "        model.addAttribute(\"articles\", articles);",
     "        model.addAttribute(\"categories\", categories);",
@@ -948,15 +954,15 @@ story.append(Paragraph("<b>@RequestParam(required = false)</b>", h3))
 story.append(Paragraph(
     "URL parameters like /wiki?search=java or /wiki?category=Programming are optional. "
     "If the URL does not include them, Spring passes null instead of crashing.", body))
-story.append(Paragraph("<b>The categories stream</b>", h3))
+story.append(Paragraph("<b>How the categories list is built</b>", h3))
 story.append(Paragraph(
-    "articleService.findAll() returns all articles. "
-    ".stream() lets us process the list in a pipeline. "
-    ".map(Article::getCategory) extracts just the category string from each article. "
-    ".distinct() removes duplicates. "
-    ".sorted() sorts them A-Z. "
-    ".collect(Collectors.toList()) turns the result back into a normal List. "
-    "This produces e.g. ['General', 'History', 'Programming', 'Testing'].", body))
+    "We start with an empty ArrayList called categories. "
+    "We loop through every article with a for loop. "
+    "For each article, we check: is this article's category already in the list? "
+    "If not, we add it. "
+    "After the loop, Collections.sort() sorts the list alphabetically. "
+    "This gives us e.g. ['General', 'History', 'Programming', 'Testing'] "
+    "which the template uses to display the clickable filter pills.", body))
 story.append(PageBreak())
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -1421,13 +1427,13 @@ qas = [
      "In the Thymeleaf template, ${articles} reads it back. "
      "The Model only exists for the duration of one request."),
 
-    ("What does the Stream API do in WikiController?",
-     "articleService.findAll().stream() starts a processing pipeline on the article list. "
-     ".map(Article::getCategory) extracts just the category string from each article. "
-     ".distinct() removes duplicates so each category appears once. "
-     ".sorted() sorts them alphabetically. "
-     ".collect(Collectors.toList()) converts the result back to a List. "
-     "This produces ['General', 'History', 'Programming', 'Testing'] for the filter pills."),
+    ("How do you build the categories list in WikiController?",
+     "I use a simple for loop. I start with an empty ArrayList. "
+     "I loop through every article using a for-each loop. "
+     "Inside the loop I check: if the article's category is not already in the list, I add it. "
+     "After the loop I call Collections.sort() to sort the list alphabetically. "
+     "This produces ['General', 'History', 'Programming', 'Testing'] "
+     "which the template displays as clickable filter pills."),
 
     ("What is the layered architecture and why is it important?",
      "My project has three layers: Controller, Service, Repository. "
@@ -1444,8 +1450,8 @@ qas = [
      "and HttpSession-based authentication instead of hard-coded checks."),
 
     ("How does the category filter work?",
-     "WikiController builds a list of unique category names by streaming all articles and "
-     "calling .distinct(). It puts this list in the Model as 'categories'. "
+     "WikiController loops through all articles and collects unique category names into an ArrayList. "
+     "It sorts the list and puts it in the Model as 'categories'. "
      "The template shows each as a clickable pill link: /wiki?category=Programming. "
      "When clicked, the browser sends a GET with ?category=Programming, the Controller "
      "reads it with @RequestParam and calls articleService.findByCategory(category), "
